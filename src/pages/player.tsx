@@ -1,15 +1,23 @@
 import { useEffect } from "react";
+import { useAppDispatch } from "../store";
+import { Video } from "../components/video";
 import { Header } from "../components/header";
 import { Sidebar } from "../components/sidebar";
-import { Video } from "../components/video";
-import { useCurrentLesson } from "../store/slices/player";
+import { loadCourse, useCurrentLesson } from "../store/slices/player";
 
 export function Player() {
+  const dispatch = useAppDispatch();
   const { currentLesson } = useCurrentLesson();
 
   useEffect(() => {
-    document.title = `Assistindo: ${currentLesson.title}`;
+    if (currentLesson) {
+      document.title = `Assistindo: ${currentLesson.title}`;
+    }
   }, [currentLesson]);
+
+  useEffect(() => {
+    dispatch(loadCourse());
+  }, [dispatch]);
 
   return (
     <div className="h-svh bg-zinc-950 text-zinc-50 flex justify-center items-center">
